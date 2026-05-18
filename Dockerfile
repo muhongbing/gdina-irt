@@ -1,4 +1,4 @@
-FROM rocker/r-ver:4.5.1
+FROM registry.cn-hangzhou.aliyuncs.com/rocker/r-ver:4.5.1
 
 # 1. 更换为清华 Ubuntu 源（稳定且速度快）
 RUN sed -i 's|http://archive.ubuntu.com|https://mirrors.tuna.tsinghua.edu.cn/ubuntu|g' /etc/apt/sources.list && \
@@ -18,7 +18,7 @@ RUN echo 'options(repos = c(CRAN = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")
 # 4. 安装 plumber（启用依赖，确保完整安装）
 RUN R -e "install.packages('plumber', dependencies = TRUE, Ncpus = 2)"
 
-# 5. 安装其他核心包（不自动安装依赖，避免 arrow 等大包，但 plumber 已独立安装，不会重复）
+# 5. 安装其他核心包（不自动安装依赖，避免 arrow 等大包）
 RUN R -e "install.packages(c('mirt', 'GDINA', 'lme4', 'jsonlite', 'dplyr', 'tidyr', 'remotes'), dependencies = FALSE, Ncpus = 2)"
 
 # 6. 安装 gtheory（使用单核、长超时，防止内存/编译崩溃）
